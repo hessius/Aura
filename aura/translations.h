@@ -197,16 +197,16 @@ static const LocalizedStrings strings_tr = {
 
 static const LocalizedStrings strings_sv = {
   "--°C", "Känns som", "7-DAGARS PROGNOS", "TIMPROGNOS",
-  "Idag", "Nu", "", "", "Middag", "Ogiltig timme",
+  "Idag", "Nu", "fm", "em", "Middag", "Ogiltig timme",
   "Ljusstyrka:", "Plats:", "Använd °F:", "24h:",
-  "Spara", "Avbryt", "Stäng", "Plats", "Aterställ Wi-Fi",
-  "Aterställ", "Andra plats", "Aura-inställningar",
+  "Spara", "Avbryt", "Stäng", "Plats", "Återställ Wi-Fi",
+  "Återställ", "Ändra plats", "Aura-inställningar",
   "Stad:", "Sökresultat", "t.ex. Stockholm",
   "Wi-Fi-konfiguration:\n\n"
   "Anslut din telefon\n"
   "eller laptop till den\n"
   "tillfälliga Wi-Fi-\n"
-  "atkomstpunkten "
+  "åtkomstpunkten "
   DEFAULT_CAPTIVE_SSID
   "\n"
   "för att konfigurera.\n\n"
@@ -215,18 +215,18 @@ static const LocalizedStrings strings_sv = {
   "efter anslutning, besök\n"
   "http://192.168.4.1\n"
   "i din webbläsare.",
-  "Ar du säker pa att du vill\n"
-  "aterställa Wi-Fi-\n"
+  "Är du säker på att du vill\n"
+  "återställa Wi-Fi-\n"
   "autentiseringsuppgifter?\n\n"
-  "Du maste ateransluta till\n"
+  "Du måste återansluta till\n"
   "SSID " DEFAULT_CAPTIVE_SSID
   " med din telefon eller\n"
   "webbläsare för att\n"
   "omkonfigurera Wi-Fi-\n"
   "autentiseringsuppgifter.",
-  "Sprak:",
-  {"Sön", "Man", "Tis", "Ons", "Tor", "Fre", "Lör"},
-  "Nattdämpning"
+  "Språk:",
+  {"Sön", "Mån", "Tis", "Ons", "Tor", "Fre", "Lör"},
+  "Dimma nattetid"
 };
 
 static const LocalizedStrings strings_it = {
