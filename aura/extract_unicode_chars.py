@@ -73,11 +73,13 @@ def print_character_analysis(non_ascii_chars, char_counter):
     spanish_chars = set("ñáéíóúüÑÁÉÍÓÚÜ¿¡")
     german_chars = set("äöüßÄÖÜ")
     french_chars = set("àâäçéèêëïîôùûüÿæœÀÂÄÇÉÈÊËÏÎÔÙÛÜŸÆŒ")
+    scandinavian_chars = set("åæøÅÆØ")
     
     spanish_found = non_ascii_chars & spanish_chars
     german_found = non_ascii_chars & german_chars
     french_found = non_ascii_chars & french_chars
-    other_found = non_ascii_chars - spanish_chars - german_chars - french_chars
+    scandinavian_found = non_ascii_chars & scandinavian_chars
+    other_found = non_ascii_chars - spanish_chars - german_chars - french_chars - scandinavian_chars
     
     if spanish_found:
         print(f"Spanish: {''.join(sorted(spanish_found))}")
@@ -85,6 +87,8 @@ def print_character_analysis(non_ascii_chars, char_counter):
         print(f"German:  {''.join(sorted(german_found))}")
     if french_found:
         print(f"French:  {''.join(sorted(french_found))}")
+    if scandinavian_found:
+        print(f"Scandinavian: {''.join(sorted(scandinavian_found))}")
     if other_found:
         print(f"Other:   {''.join(sorted(other_found))}")
     
@@ -148,6 +152,54 @@ def extract_string_literals(content):
     else:
         print("No non-ASCII characters found in string literals.")
 
+def analyze_location_characters():
+    """Analyze common characters needed for international location names."""
+    print("\n8. LOCATION NAME CHARACTER ANALYSIS:")
+    print("-" * 30)
+    
+    # Common characters in European location names
+    location_chars = {
+        'Scandinavian': 'åæøÅÆØ',  # Swedish, Norwegian, Danish
+        'German/Austrian': 'äöüßÄÖÜ',
+        'French': 'àâäçéèêëïîôùûüÿÀÂÄÇÉÈÊËÏÎÔÙÛÜŸ',
+        'Spanish': 'ñáéíóúüÑÁÉÍÓÚÜ',
+        'Italian': 'àèéìíîòóùúÀÈÉÌÍÎÒÓÙÚ',
+        'Eastern European': 'ąćęłńóśźżĄĆĘŁŃÓŚŹŻ',  # Polish
+        'Czech/Slovak': 'áčďéěíňóřšťúůýžÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ',
+    }
+    
+    sample_locations = [
+        'Spånga, Sweden',  # Problem case mentioned in issue
+        'Malmö, Sweden',
+        'København, Denmark', 
+        'Tromsø, Norway',
+        'Zürich, Switzerland',
+        'München, Germany',
+        'Kraków, Poland',
+        'České Budějovice, Czech Republic',
+        'São Paulo, Brazil',
+        'México City, Mexico'
+    ]
+    
+    print("Common location name characters by region:")
+    for region, chars in location_chars.items():
+        print(f"{region:<20}: {chars}")
+    
+    print(f"\nSample problematic location names:")
+    for location in sample_locations:
+        print(f"  {location}")
+    
+    # Calculate all needed characters
+    all_chars = set()
+    for chars in location_chars.values():
+        all_chars.update(chars)
+    
+    print(f"\nRecommended character set for international locations:")
+    sorted_chars = ''.join(sorted(all_chars, key=ord))
+    print(f"'{sorted_chars}'")
+    
+    return all_chars
+
 def main():
     if len(sys.argv) != 2:
         print("Usage: python3 extract_unicode_chars.py <path_to_weather.ino>")
@@ -164,6 +216,21 @@ def main():
     
     if content:
         extract_string_literals(content)
+    
+    # Add location character analysis
+    location_chars = analyze_location_characters()
+    
+    # Show what's missing
+    current_chars = set('°¿ÉÊÍÓÜßáäçèéíñóöúûü‐→')  # From copilot instructions
+    missing_chars = location_chars - current_chars
+    
+    if missing_chars:
+        print(f"\n9. MISSING CHARACTERS FOR LOCATION SUPPORT:")
+        print("-" * 30)
+        missing_sorted = ''.join(sorted(missing_chars, key=ord))
+        print(f"Characters to add: '{missing_sorted}'")
+        print("These characters are commonly used in international location names")
+        print("but are not included in the current font character set.")
     
     print(f"\n✅ Analysis complete! Found {len(non_ascii_chars)} unique non-ASCII characters.")
     print("Use the character list above with LVGL's font converter tool.")

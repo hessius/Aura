@@ -521,13 +521,66 @@ void create_ui() {
   lv_obj_align(lbl_clock, LV_ALIGN_TOP_RIGHT, -10, 2);
 }
 
+String transliterate_unsupported_chars(const String &input) {
+  String result = input;
+  
+  // Map of unsupported characters to supported alternatives
+  // Focus on the most common missing characters for location names
+  result.replace("å", "a");  // Swedish/Danish/Norwegian
+  result.replace("Å", "A");
+  result.replace("æ", "ae"); // Danish/Norwegian  
+  result.replace("Æ", "AE");
+  result.replace("ø", "o");  // Danish/Norwegian
+  result.replace("Ø", "O");
+  result.replace("ł", "l");  // Polish
+  result.replace("Ł", "L");
+  result.replace("ą", "a");  // Polish
+  result.replace("Ą", "A");
+  result.replace("ć", "c");  // Polish
+  result.replace("Ć", "C");
+  result.replace("ę", "e");  // Polish
+  result.replace("Ę", "E");
+  result.replace("ń", "n");  // Polish
+  result.replace("Ń", "N");
+  result.replace("ś", "s");  // Polish
+  result.replace("Ś", "S");
+  result.replace("ź", "z");  // Polish
+  result.replace("Ź", "Z");
+  result.replace("ż", "z");  // Polish
+  result.replace("Ż", "Z");
+  result.replace("č", "c");  // Czech/Slovak
+  result.replace("Č", "C");
+  result.replace("ď", "d");  // Czech/Slovak
+  result.replace("Ď", "D");
+  result.replace("ě", "e");  // Czech
+  result.replace("Ě", "E");
+  result.replace("ň", "n");  // Czech/Slovak
+  result.replace("Ň", "N");
+  result.replace("ř", "r");  // Czech
+  result.replace("Ř", "R");
+  result.replace("š", "s");  // Czech/Slovak
+  result.replace("Š", "S");
+  result.replace("ť", "t");  // Czech/Slovak
+  result.replace("Ť", "T");
+  result.replace("ů", "u");  // Czech
+  result.replace("Ů", "U");
+  result.replace("ý", "y");  // Czech/Slovak
+  result.replace("Ý", "Y");
+  result.replace("ž", "z");  // Czech/Slovak
+  result.replace("Ž", "Z");
+  
+  return result;
+}
+
 void populate_results_dropdown() {
   dd_opts[0] = '\0';
   for (JsonObject item : geoResults) {
-    strcat(dd_opts, item["name"].as<const char *>());
+    String name = transliterate_unsupported_chars(String(item["name"].as<const char *>()));
+    strcat(dd_opts, name.c_str());
     if (item["admin1"]) {
       strcat(dd_opts, ", ");
-      strcat(dd_opts, item["admin1"].as<const char *>());
+      String admin = transliterate_unsupported_chars(String(item["admin1"].as<const char *>()));
+      strcat(dd_opts, admin.c_str());
     }
 
     strcat(dd_opts, "\n");
@@ -570,7 +623,8 @@ static void location_save_event_cb(lv_event_t *e) {
   location = prefs.getString("location");
 
   // Re‐fetch weather immediately
-  lv_label_set_text(lbl_loc, opts.c_str());
+  String transliterated_opts = transliterate_unsupported_chars(opts);
+  lv_label_set_text(lbl_loc, transliterated_opts.c_str());
   fetch_and_update_weather();
 
   lv_obj_del(location_win);
@@ -814,7 +868,8 @@ void create_settings_window() {
   lv_obj_align_to(lbl_loc_l, lbl_u, LV_ALIGN_OUT_BOTTOM_LEFT, 0, vertical_element_spacing);
 
   lbl_loc = lv_label_create(cont);
-  lv_label_set_text(lbl_loc, location.c_str());
+  String transliterated_location = transliterate_unsupported_chars(location);
+  lv_label_set_text(lbl_loc, transliterated_location.c_str());
   lv_obj_set_style_text_font(lbl_loc, get_font_12(), LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_align_to(lbl_loc, lbl_loc_l, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
 
