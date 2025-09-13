@@ -33,6 +33,7 @@ struct LocalizedStrings {
   const char* wifi_config;
   const char* reset_confirmation;
   const char* language_label;
+  const char* color_scheme_label;
   const char* weekdays[7];
   const char* use_night_mode;
 };
@@ -64,6 +65,7 @@ static const LocalizedStrings strings_en = {
   " with your phone or browser to "
   "reconfigure Wi-Fi credentials.",
   "Language:",
+  "Color scheme:",
   {"Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"},
   "Dim screen at night"
 };
@@ -95,6 +97,7 @@ static const LocalizedStrings strings_es = {
   "para reconfigurar las\n"
   "credenciales Wi-Fi.",
   "Idioma:",
+  "Esquema de color:",
   {"Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"},
   "Pantalla noche"
 };
@@ -128,6 +131,7 @@ static const LocalizedStrings strings_de = {
   "Wi-Fi Zugangsdaten\n"
   "neu zu konfigurieren.",
   "Sprache:",
+  "Farbschema:",
   {"So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"},
   "Nacht-Dimmen"
 };
@@ -161,6 +165,7 @@ static const LocalizedStrings strings_fr = {
   "navigateur pour reconfigurer\n"
   "les identifiants Wi-Fi.",
   "Langue:",
+  "Schéma de couleur:",
   {"Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"},
   "Nuit écran"
 };
@@ -191,6 +196,7 @@ static const LocalizedStrings strings_tr = {
   " SSID'sine tekrar bağlanmaniz\n"
   "gerekecek.",
   "Dil:",
+  "Renk şeması:",
   {"Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"},
   "Gece kısık"
 };
@@ -225,6 +231,7 @@ static const LocalizedStrings strings_sv = {
   "omkonfigurera Wi-Fi-\n"
   "autentiseringsuppgifter.",
   "Språk:",
+  "Färgschema:",
   {"Sön", "Mån", "Tis", "Ons", "Tor", "Fre", "Lör"},
   "Dimma nattetid"
 };
@@ -254,6 +261,7 @@ static const LocalizedStrings strings_it = {
   "con il tuo telefono o browser a "
   "riconfigurare le credenziali Wi-Fi.",
   "Lingua:",
+  "Schema colore:",
   {"Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"},
   "Schermo notte"
 };
