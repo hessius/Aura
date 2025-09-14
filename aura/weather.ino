@@ -1012,6 +1012,14 @@ static void settings_event_handler(lv_event_t *e) {
   }
 
   if (tgt == color_scheme_dropdown && code == LV_EVENT_VALUE_CHANGED) {
+    // Prevent rapid consecutive changes that could cause freezing
+    static unsigned long last_color_change = 0;
+    unsigned long now = millis();
+    if (now - last_color_change < 1000) { // Debounce for 1 second
+      return;
+    }
+    last_color_change = now;
+    
     current_color_scheme = (ColorScheme)lv_dropdown_get_selected(color_scheme_dropdown);
     
     // Show loading spinner
@@ -1019,29 +1027,31 @@ static void settings_event_handler(lv_event_t *e) {
     lv_obj_set_size(spinner, 40, 40);
     lv_obj_center(spinner);
     
-    // Create loading label with localized text
-    lv_obj_t *loading_label = lv_label_create(lv_scr_act());
-    const LocalizedStrings* strings = get_strings(current_language);
-    lv_label_set_text(loading_label, strings->applying_theme);
-    lv_obj_set_style_text_font(loading_label, get_font_12(), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_align_to(loading_label, spinner, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
-    
     // Force a display update to show the spinner
     lv_refr_now(lv_disp_get_default());
     
-    // Update the UI immediately to reflect color scheme change
-    lv_obj_del(settings_win);
-    settings_win = nullptr;
+    // Small delay to ensure spinner is visible
+    delay(100);
     
-    // Save preferences and recreate UI with new color scheme
+    // Save preferences first before UI changes
     prefs.putBool("useFahrenheit", use_fahrenheit);
     prefs.putBool("use24Hour", use_24_hour);
     prefs.putBool("useNightMode", use_night_mode);
     prefs.putUInt("language", current_language);
     prefs.putUInt("colorScheme", current_color_scheme);
 
+    // Clean up keyboard first
     lv_keyboard_set_textarea(kb, nullptr);
     lv_obj_add_flag(kb, LV_OBJ_FLAG_HIDDEN);
+    
+    // Delete settings window
+    if (settings_win != nullptr) {
+      lv_obj_del(settings_win);
+      settings_win = nullptr;
+    }
+    
+    // Give time for cleanup before recreating UI
+    delay(50);
     
     // Recreate the main UI with the new color scheme
     lv_obj_clean(lv_scr_act());

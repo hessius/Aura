@@ -36,7 +36,6 @@ struct LocalizedStrings {
   const char* color_scheme_label;
   const char* weekdays[7];
   const char* use_night_mode;
-  const char* applying_theme;
 };
 
 #define DEFAULT_CAPTIVE_SSID "Aura"
@@ -68,8 +67,7 @@ static const LocalizedStrings strings_en = {
   "Language:",
   "Color scheme:",
   {"Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"},
-  "Dim screen at night",
-  "Applying theme..."
+  "Dim screen at night"
 };
 
 static const LocalizedStrings strings_es = {
@@ -101,8 +99,7 @@ static const LocalizedStrings strings_es = {
   "Idioma:",
   "Esquema de color:",
   {"Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"},
-  "Pantalla noche",
-  "Aplicando tema..."
+  "Pantalla noche"
 };
 
 static const LocalizedStrings strings_de = {
@@ -136,8 +133,7 @@ static const LocalizedStrings strings_de = {
   "Sprache:",
   "Farbschema:",
   {"So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"},
-  "Nacht-Dimmen",
-  "Thema wird angewendet..."
+  "Nacht-Dimmen"
 };
 
 static const LocalizedStrings strings_fr = {
@@ -171,8 +167,7 @@ static const LocalizedStrings strings_fr = {
   "Langue:",
   "Schéma de couleur:",
   {"Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"},
-  "Nuit écran",
-  "Application du thème..."
+  "Nuit écran"
 };
 
 static const LocalizedStrings strings_tr = {
@@ -203,8 +198,7 @@ static const LocalizedStrings strings_tr = {
   "Dil:",
   "Renk şeması:",
   {"Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"},
-  "Gece kısık",
-  "Tema uygulanıyor..."
+  "Gece kısık"
 };
 
 static const LocalizedStrings strings_sv = {
@@ -239,8 +233,7 @@ static const LocalizedStrings strings_sv = {
   "Språk:",
   "Färgschema:",
   {"Sön", "Mån", "Tis", "Ons", "Tor", "Fre", "Lör"},
-  "Dimma nattetid",
-  "Tillämpar tema..."
+  "Dimma nattetid"
 };
 
 static const LocalizedStrings strings_it = {
@@ -270,8 +263,7 @@ static const LocalizedStrings strings_it = {
   "Lingua:",
   "Schema colore:",
   {"Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"},
-  "Schermo notte",
-  "Applicando tema..."
+  "Schermo notte"
 };
 
 static const LocalizedStrings* get_strings(Language current_language) {
