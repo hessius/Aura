@@ -30,11 +30,32 @@
 #define NIGHT_MODE_START_HOUR 22
 #define NIGHT_MODE_END_HOUR 6
 
-LV_FONT_DECLARE(lv_font_montserrat_latin_12);
-LV_FONT_DECLARE(lv_font_montserrat_latin_14);
-LV_FONT_DECLARE(lv_font_montserrat_latin_16);
-LV_FONT_DECLARE(lv_font_montserrat_latin_20);
-LV_FONT_DECLARE(lv_font_montserrat_latin_42);
+// International Montserrat fonts with comprehensive UTF-8 support
+LV_FONT_DECLARE(lv_font_montserrat_international_12);
+LV_FONT_DECLARE(lv_font_montserrat_international_14);
+LV_FONT_DECLARE(lv_font_montserrat_international_16);
+LV_FONT_DECLARE(lv_font_montserrat_international_20);
+LV_FONT_DECLARE(lv_font_montserrat_international_42);
+
+const lv_font_t* get_font_12() {
+  return &lv_font_montserrat_international_12;
+}
+
+const lv_font_t* get_font_14() {
+  return &lv_font_montserrat_international_14;
+}
+
+const lv_font_t* get_font_16() {
+  return &lv_font_montserrat_international_16;
+}
+
+const lv_font_t* get_font_20() {
+  return &lv_font_montserrat_international_20;
+}
+
+const lv_font_t* get_font_42() {
+  return &lv_font_montserrat_international_42;
+}
 
 static Language current_language = LANG_EN;
 
@@ -79,27 +100,6 @@ static const ColorSchemeData color_schemes[] = {
 };
 
 static ColorScheme current_color_scheme = COLOR_BLUE;
-
-// Font selection based on language
-const lv_font_t* get_font_12() {
-  return &lv_font_montserrat_latin_12;
-}
-
-const lv_font_t* get_font_14() {
-  return &lv_font_montserrat_latin_14;
-}
-
-const lv_font_t* get_font_16() {
-  return &lv_font_montserrat_latin_16;
-}
-
-const lv_font_t* get_font_20() {
-  return &lv_font_montserrat_latin_20;
-}
-
-const lv_font_t* get_font_42() {
-  return &lv_font_montserrat_latin_42;
-}
 
 // Color scheme helper functions
 const ColorSchemeData* get_current_colors() {
