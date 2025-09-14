@@ -30,30 +30,35 @@
 #define NIGHT_MODE_START_HOUR 22
 #define NIGHT_MODE_END_HOUR 6
 
-// Using LVGL's built-in Montserrat fonts with full UTF-8 character support
-// No need to declare - they are built into LVGL
+// Custom Montserrat Latin fonts with extended character support
+LV_FONT_DECLARE(lv_font_montserrat_latin_12);
+LV_FONT_DECLARE(lv_font_montserrat_latin_14);
+LV_FONT_DECLARE(lv_font_montserrat_latin_16);
+LV_FONT_DECLARE(lv_font_montserrat_latin_20);
+LV_FONT_DECLARE(lv_font_montserrat_latin_42);
 
 static Language current_language = LANG_EN;
 
-// Font selection using LVGL's built-in Montserrat fonts with full UTF-8 support
+// Font selection using custom Latin fonts with extended character support
+// Character set: °¿ÉÊÍÓÜßáäçèéíñóöúûü‐→Îàâéèêëîïôöùûüÿç
 const lv_font_t* get_font_12() {
-  return &lv_font_montserrat_12;
+  return &lv_font_montserrat_latin_12;
 }
 
 const lv_font_t* get_font_14() {
-  return &lv_font_montserrat_14;
+  return &lv_font_montserrat_latin_14;
 }
 
 const lv_font_t* get_font_16() {
-  return &lv_font_montserrat_16;
+  return &lv_font_montserrat_latin_16;
 }
 
 const lv_font_t* get_font_20() {
-  return &lv_font_montserrat_20;
+  return &lv_font_montserrat_latin_20;
 }
 
 const lv_font_t* get_font_42() {
-  return &lv_font_montserrat_42;
+  return &lv_font_montserrat_latin_42;
 }
 
 SPIClass touchscreenSPI = SPIClass(VSPI);
@@ -519,23 +524,24 @@ void create_ui() {
 }
 
 String transliterate_unsupported_chars(const String &input) {
-  // OPTION 1: No transliteration - test if built-in fonts support international characters
-  // Uncomment the return below to disable all transliteration and test font support
-  return input;
-  
-  /* OPTION 2: Hybrid approach with minimal transliteration
   String result = input;
   
-  // Only transliterate characters that are commonly problematic in embedded fonts
-  // Scandinavian characters that are often missing
-  result.replace("å", "a");  // Swedish/Danish/Norwegian
-  result.replace("Å", "A");  
-  result.replace("æ", "ae"); // Danish/Norwegian
-  result.replace("Æ", "AE"); 
-  result.replace("ø", "o");  // Danish/Norwegian
-  result.replace("Ø", "O");  
+  // Custom Latin fonts include: °¿ÉÊÍÓÜßáäçèéíñóöúûü‐→Îàâéèêëîïôöùûüÿç
+  // Only transliterate characters that are truly missing from this set
   
-  // Polish characters that are often missing in embedded fonts
+  // Missing Scandinavian characters
+  result.replace("Å", "A");  // Missing from font
+  result.replace("å", "a");  // Missing from font  
+  result.replace("Ä", "A");  // Missing from font (uppercase)
+  // ä is present in font - don't replace
+  result.replace("Ö", "O");  // Missing from font (uppercase)
+  // ö is present in font - don't replace
+  result.replace("Ø", "O");  // Missing from font
+  result.replace("ø", "o");  // Missing from font
+  result.replace("Æ", "AE"); // Missing from font
+  result.replace("æ", "ae"); // Missing from font
+  
+  // Missing Eastern European characters (commonly in location names)
   result.replace("ł", "l");  
   result.replace("Ł", "L");  
   result.replace("ą", "a");  
@@ -552,31 +558,29 @@ String transliterate_unsupported_chars(const String &input) {
   result.replace("Ź", "Z");  
   result.replace("ż", "z");  
   result.replace("Ż", "Z");  
-  
-  // Czech/Slovak characters often missing
-  result.replace("č", "c");  
-  result.replace("Č", "C");  
-  result.replace("ď", "d");  
-  result.replace("Ď", "D");  
-  result.replace("ě", "e");  
-  result.replace("Ě", "E");  
-  result.replace("ň", "n");  
-  result.replace("Ň", "N");  
-  result.replace("ř", "r");  
-  result.replace("Ř", "R");  
-  result.replace("š", "s");  
-  result.replace("Š", "S");  
-  result.replace("ť", "t");  
-  result.replace("Ť", "T");  
-  result.replace("ů", "u");  
-  result.replace("Ů", "U");  
-  result.replace("ý", "y");  
-  result.replace("Ý", "Y");  
   result.replace("ž", "z");  
   result.replace("Ž", "Z");  
+  result.replace("š", "s");  
+  result.replace("Š", "S");  
+  result.replace("č", "c");  
+  result.replace("Č", "C");  
+  result.replace("ř", "r");  
+  result.replace("Ř", "R");  
+  result.replace("ť", "t");  
+  result.replace("Ť", "T");  
+  result.replace("ď", "d");  
+  result.replace("Ď", "D");  
+  result.replace("ň", "n");  
+  result.replace("Ň", "N");  
+  result.replace("ů", "u");  
+  result.replace("Ů", "U");  
+  result.replace("ě", "e");  
+  result.replace("Ě", "E");
+  
+  // Note: These characters ARE present in custom fonts, so we don't replace them:
+  // ä, ö, é, è, ê, ë, î, ï, ô, ù, û, ü, ÿ, ç, à, â, í, ñ, ó, ú, É, Ê, Í, Ó, Ü, ß, Î
   
   return result;
-  */
 }
 
 void populate_results_dropdown() {
@@ -1391,3 +1395,10 @@ const lv_img_dsc_t* choose_icon(int code, int is_day) {
         : &icon_mostly_cloudy_night;
   }
 }
+
+// Include custom font definitions at end of file
+#include "lv_font_montserrat_latin_12.c"
+#include "lv_font_montserrat_latin_14.c"
+#include "lv_font_montserrat_latin_16.c"
+#include "lv_font_montserrat_latin_20.c"
+#include "lv_font_montserrat_latin_42.c"
