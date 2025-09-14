@@ -46,7 +46,8 @@ enum ColorScheme {
   COLOR_ORANGE = 3, 
   COLOR_WHITE = 4, 
   COLOR_BLACK = 5, 
-  COLOR_GREEN = 6 
+  COLOR_GREEN = 6,
+  COLOR_PINK = 7 
 };
 
 struct ColorSchemeData {
@@ -61,18 +62,20 @@ struct ColorSchemeData {
 static const ColorSchemeData color_schemes[] = {
   // Blue (default) - preserve existing colors
   { 0x4c8cb9, 0xa6cdec, 0x5e9bc8, 0xFFFFFF, 0xe4ffff, 0xb9ecff },
-  // Red
-  { 0x8b4c4c, 0xeca6a6, 0xc85e5e, 0xFFFFFF, 0xffe4e4, 0xffb9b9 },
-  // Yellow
-  { 0x8b8b4c, 0xececa6, 0xc8c85e, 0x000000, 0x333300, 0x666600 },
-  // Orange
-  { 0x8b6b4c, 0xecc6a6, 0xc8965e, 0xFFFFFF, 0xfff0e4, 0xffe0b9 },
+  // Red (proper red colors)
+  { 0xB22222, 0xFF6B6B, 0xDC143C, 0xFFFFFF, 0xffe4e4, 0xffcccc },
+  // Yellow (proper bright yellow)
+  { 0xFFD700, 0xFFF700, 0xFFE55C, 0x000000, 0x333300, 0x666600 },
+  // Orange (proper orange, not brown)
+  { 0xFF8C00, 0xFFA500, 0xFF7F50, 0xFFFFFF, 0xfff0e4, 0xffe0cc },
   // White
   { 0xf0f0f0, 0xffffff, 0xe0e0e0, 0x000000, 0x333333, 0x666666 },
   // Black
   { 0x1a1a1a, 0x404040, 0x2a2a2a, 0xFFFFFF, 0xe0e0e0, 0xc0c0c0 },
   // Green
-  { 0x4c8b4c, 0xa6eca6, 0x5ec85e, 0xFFFFFF, 0xe4ffe4, 0xb9ffb9 }
+  { 0x4c8b4c, 0xa6eca6, 0x5ec85e, 0xFFFFFF, 0xe4ffe4, 0xb9ffb9 },
+  // Pink (the old "red" that was actually pink)
+  { 0xFF69B4, 0xFFB6C1, 0xFF1493, 0xFFFFFF, 0xffe4f0, 0xffccdd }
 };
 
 static ColorScheme current_color_scheme = COLOR_BLUE;
@@ -798,6 +801,10 @@ void create_settings_window() {
   lv_obj_set_width(settings_win, 240);
 
   lv_obj_t *cont = lv_win_get_content(settings_win);
+  
+  // Make content scrollable
+  lv_obj_set_scroll_dir(cont, LV_DIR_VER);
+  lv_obj_set_scrollbar_mode(cont, LV_SCROLLBAR_MODE_AUTO);
 
   // Brightness
   lv_obj_t *lbl_b = lv_label_create(cont);
@@ -898,7 +905,7 @@ void create_settings_window() {
   lv_obj_align_to(lbl_color, lbl_lang, LV_ALIGN_OUT_BOTTOM_LEFT, 0, vertical_element_spacing);
 
   color_scheme_dropdown = lv_dropdown_create(cont);
-  lv_dropdown_set_options(color_scheme_dropdown, "Blue\nRed\nYellow\nOrange\nWhite\nBlack\nGreen");
+  lv_dropdown_set_options(color_scheme_dropdown, "Blue\nRed\nYellow\nOrange\nWhite\nBlack\nGreen\nPink");
   lv_dropdown_set_selected(color_scheme_dropdown, current_color_scheme);
   lv_obj_set_width(color_scheme_dropdown, 120);
   lv_obj_set_style_text_font(color_scheme_dropdown, get_font_12(), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -943,16 +950,25 @@ void create_settings_window() {
   lv_obj_set_style_text_font(lbl_reset, get_font_12(), LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_center(lbl_reset);
 
-  // Close Settings button
-  btn_close_obj = lv_btn_create(cont);
-  lv_obj_set_size(btn_close_obj, 80, 40);
-  lv_obj_align(btn_close_obj, LV_ALIGN_BOTTOM_RIGHT, 0, 0);
+  // Add bottom padding to content so close button doesn't overlap
+  lv_obj_set_style_pad_bottom(cont, 60, LV_PART_MAIN);
+
+  // Close Settings button - make it a full-width bottom bar
+  btn_close_obj = lv_btn_create(settings_win);
+  lv_obj_set_size(btn_close_obj, 240, 45);
+  lv_obj_align(btn_close_obj, LV_ALIGN_BOTTOM_MID, 0, 0);
   lv_obj_add_event_cb(btn_close_obj, settings_event_handler, LV_EVENT_CLICKED, NULL);
+  
+  // Style the close button as a bottom bar
+  lv_obj_set_style_radius(btn_close_obj, 0, LV_PART_MAIN);
+  lv_obj_set_style_border_width(btn_close_obj, 1, LV_PART_MAIN);
+  lv_obj_set_style_border_color(btn_close_obj, lv_color_hex(0x888888), LV_PART_MAIN);
+  lv_obj_set_style_border_side(btn_close_obj, LV_BORDER_SIDE_TOP, LV_PART_MAIN);
 
   // Cancel button
   lv_obj_t *lbl_btn = lv_label_create(btn_close_obj);
   lv_label_set_text(lbl_btn, strings->close);
-  lv_obj_set_style_text_font(lbl_btn, get_font_12(), LV_PART_MAIN | LV_STATE_DEFAULT);
+  lv_obj_set_style_text_font(lbl_btn, get_font_14(), LV_PART_MAIN | LV_STATE_DEFAULT);
   lv_obj_center(lbl_btn);
 }
 
@@ -997,6 +1013,21 @@ static void settings_event_handler(lv_event_t *e) {
 
   if (tgt == color_scheme_dropdown && code == LV_EVENT_VALUE_CHANGED) {
     current_color_scheme = (ColorScheme)lv_dropdown_get_selected(color_scheme_dropdown);
+    
+    // Show loading spinner
+    lv_obj_t *spinner = lv_spinner_create(lv_scr_act());
+    lv_obj_set_size(spinner, 40, 40);
+    lv_obj_center(spinner);
+    
+    // Create loading label
+    lv_obj_t *loading_label = lv_label_create(lv_scr_act());
+    lv_label_set_text(loading_label, "Applying theme...");
+    lv_obj_set_style_text_font(loading_label, get_font_12(), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_align_to(loading_label, spinner, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
+    
+    // Force a display update to show the spinner
+    lv_refr_now(lv_disp_get_default());
+    
     // Update the UI immediately to reflect color scheme change
     lv_obj_del(settings_win);
     settings_win = nullptr;
