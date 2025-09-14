@@ -524,9 +524,13 @@ void create_ui() {
 String transliterate_unsupported_chars(const String &input) {
   String result = input;
   
-  // Only transliterate characters that are definitely NOT supported by the LVGL fonts
-  // Font supports: °¿ÉÊÍÎÓÜßàáâäçèéêëíîïñóôöùúûüÿ‐→
-  // DO NOT transliterate characters that are already supported!
+  // TRANSLITERATION WORKAROUND for missing characters in LVGL fonts
+  // 
+  // Current font supports: °¿ÉÊÍÎÓÜßàáâäçèéêëíîïñóôöùúûüÿ‐→
+  // Missing for locations: ÀÁÂÄÅÆÇÈËÌÎÏÑÒÔÖØÙÚÛÝàâåæêëìîïòôøùýÿĄąĆćČčĎďĘęĚěŁłŃńŇňŘřŚśŠšŤťŮůŸŹźŻżŽž
+  //
+  // LONG-TERM SOLUTION: Update font files using LVGL Font Converter with complete character set
+  // For now, convert unsupported characters to readable ASCII alternatives
   
   // Scandinavian characters not in font
   result.replace("å", "a");  // Swedish/Danish/Norwegian - NOT supported
