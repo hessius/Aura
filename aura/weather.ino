@@ -1019,9 +1019,10 @@ static void settings_event_handler(lv_event_t *e) {
     lv_obj_set_size(spinner, 40, 40);
     lv_obj_center(spinner);
     
-    // Create loading label
+    // Create loading label with localized text
     lv_obj_t *loading_label = lv_label_create(lv_scr_act());
-    lv_label_set_text(loading_label, "Applying theme...");
+    const LocalizedStrings* strings = get_strings(current_language);
+    lv_label_set_text(loading_label, strings->applying_theme);
     lv_obj_set_style_text_font(loading_label, get_font_12(), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_align_to(loading_label, spinner, LV_ALIGN_OUT_BOTTOM_MID, 0, 10);
     
