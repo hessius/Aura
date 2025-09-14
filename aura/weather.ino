@@ -519,11 +519,12 @@ void create_ui() {
 }
 
 String transliterate_unsupported_chars(const String &input) {
-  String result = input;
+  // OPTION 1: No transliteration - test if built-in fonts support international characters
+  // Uncomment the return below to disable all transliteration and test font support
+  return input;
   
-  // HYBRID APPROACH: Using LVGL's built-in Montserrat fonts with fallback transliteration
-  // Built-in fonts may have better support than custom latin fonts, but we keep
-  // minimal transliteration for characters that might still not be supported
+  /* OPTION 2: Hybrid approach with minimal transliteration
+  String result = input;
   
   // Only transliterate characters that are commonly problematic in embedded fonts
   // Scandinavian characters that are often missing
@@ -574,11 +575,8 @@ String transliterate_unsupported_chars(const String &input) {
   result.replace("ž", "z");  
   result.replace("Ž", "Z");  
   
-  // Keep common Western European characters that are more likely to be supported:
-  // ÀÁÂÄÇÈÉÊËÌÍÎÏÑÒÓÔÖÙÚÛÜÝàáâäçèéêëìíîïñòóôöùúûüý
-  // These should work with built-in Montserrat fonts
-  
   return result;
+  */
 }
 
 void populate_results_dropdown() {
