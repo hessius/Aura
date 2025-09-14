@@ -524,50 +524,78 @@ void create_ui() {
 String transliterate_unsupported_chars(const String &input) {
   String result = input;
   
-  // Map of unsupported characters to supported alternatives
-  // Focus on the most common missing characters for location names
-  result.replace("å", "a");  // Swedish/Danish/Norwegian
-  result.replace("Å", "A");
-  result.replace("æ", "ae"); // Danish/Norwegian  
-  result.replace("Æ", "AE");
-  result.replace("ø", "o");  // Danish/Norwegian
-  result.replace("Ø", "O");
-  result.replace("ł", "l");  // Polish
-  result.replace("Ł", "L");
-  result.replace("ą", "a");  // Polish
-  result.replace("Ą", "A");
-  result.replace("ć", "c");  // Polish
-  result.replace("Ć", "C");
-  result.replace("ę", "e");  // Polish
-  result.replace("Ę", "E");
-  result.replace("ń", "n");  // Polish
-  result.replace("Ń", "N");
-  result.replace("ś", "s");  // Polish
-  result.replace("Ś", "S");
-  result.replace("ź", "z");  // Polish
-  result.replace("Ź", "Z");
-  result.replace("ż", "z");  // Polish
-  result.replace("Ż", "Z");
-  result.replace("č", "c");  // Czech/Slovak
-  result.replace("Č", "C");
-  result.replace("ď", "d");  // Czech/Slovak
-  result.replace("Ď", "D");
-  result.replace("ě", "e");  // Czech
-  result.replace("Ě", "E");
-  result.replace("ň", "n");  // Czech/Slovak
-  result.replace("Ň", "N");
-  result.replace("ř", "r");  // Czech
-  result.replace("Ř", "R");
-  result.replace("š", "s");  // Czech/Slovak
-  result.replace("Š", "S");
-  result.replace("ť", "t");  // Czech/Slovak
-  result.replace("Ť", "T");
-  result.replace("ů", "u");  // Czech
-  result.replace("Ů", "U");
-  result.replace("ý", "y");  // Czech/Slovak
-  result.replace("Ý", "Y");
-  result.replace("ž", "z");  // Czech/Slovak
-  result.replace("Ž", "Z");
+  // Only transliterate characters that are definitely NOT supported by the LVGL fonts
+  // Font supports: °¿ÉÊÍÎÓÜßàáâäçèéêëíîïñóôöùúûüÿ‐→
+  // DO NOT transliterate characters that are already supported!
+  
+  // Scandinavian characters not in font
+  result.replace("å", "a");  // Swedish/Danish/Norwegian - NOT supported
+  result.replace("Å", "A");  // NOT supported
+  result.replace("æ", "ae"); // Danish/Norwegian - NOT supported
+  result.replace("Æ", "AE"); // NOT supported
+  result.replace("ø", "o");  // Danish/Norwegian - NOT supported
+  result.replace("Ø", "O");  // NOT supported
+  
+  // Missing uppercase variants (lowercase versions ARE supported)
+  result.replace("Ö", "O");  // Uppercase O with diaeresis - NOT supported (lowercase ö is supported)
+  result.replace("À", "A");  // Uppercase A with grave - NOT supported (lowercase à is supported)
+  result.replace("Á", "A");  // Uppercase A with acute - NOT supported (lowercase á is supported)
+  result.replace("Â", "A");  // Uppercase A with circumflex - NOT supported (lowercase â is supported)
+  result.replace("Ä", "A");  // Uppercase A with diaeresis - NOT supported (lowercase ä is supported)
+  result.replace("Ç", "C");  // Uppercase C with cedilla - NOT supported (lowercase ç is supported)
+  result.replace("È", "E");  // Uppercase E with grave - NOT supported (lowercase è is supported)
+  result.replace("Ë", "E");  // Uppercase E with diaeresis - NOT supported (lowercase ë is supported)
+  result.replace("Ï", "I");  // Uppercase I with diaeresis - NOT supported (lowercase ï is supported)
+  result.replace("Ñ", "N");  // Uppercase N with tilde - NOT supported (lowercase ñ is supported)
+  result.replace("Ô", "O");  // Uppercase O with circumflex - NOT supported (lowercase ô is supported)
+  result.replace("Ù", "U");  // Uppercase U with grave - NOT supported (lowercase ù is supported)
+  result.replace("Ú", "U");  // Uppercase U with acute - NOT supported (lowercase ú is supported)
+  result.replace("Û", "U");  // Uppercase U with circumflex - NOT supported (lowercase û is supported)
+  result.replace("Ÿ", "Y");  // Uppercase Y with diaeresis - NOT supported (lowercase ÿ is supported)
+  
+  // Polish characters not in font
+  result.replace("ł", "l");  // Polish - NOT supported
+  result.replace("Ł", "L");  // NOT supported
+  result.replace("ą", "a");  // Polish - NOT supported
+  result.replace("Ą", "A");  // NOT supported
+  result.replace("ć", "c");  // Polish - NOT supported
+  result.replace("Ć", "C");  // NOT supported
+  result.replace("ę", "e");  // Polish - NOT supported
+  result.replace("Ę", "E");  // NOT supported
+  result.replace("ń", "n");  // Polish - NOT supported
+  result.replace("Ń", "N");  // NOT supported
+  result.replace("ś", "s");  // Polish - NOT supported
+  result.replace("Ś", "S");  // NOT supported
+  result.replace("ź", "z");  // Polish - NOT supported
+  result.replace("Ź", "Z");  // NOT supported
+  result.replace("ż", "z");  // Polish - NOT supported
+  result.replace("Ż", "Z");  // NOT supported
+  
+  // Czech/Slovak characters not in font
+  result.replace("č", "c");  // Czech/Slovak - NOT supported
+  result.replace("Č", "C");  // NOT supported
+  result.replace("ď", "d");  // Czech/Slovak - NOT supported
+  result.replace("Ď", "D");  // NOT supported
+  result.replace("ě", "e");  // Czech - NOT supported
+  result.replace("Ě", "E");  // NOT supported
+  result.replace("ň", "n");  // Czech/Slovak - NOT supported
+  result.replace("Ň", "N");  // NOT supported
+  result.replace("ř", "r");  // Czech - NOT supported
+  result.replace("Ř", "R");  // NOT supported
+  result.replace("š", "s");  // Czech/Slovak - NOT supported
+  result.replace("Š", "S");  // NOT supported
+  result.replace("ť", "t");  // Czech/Slovak - NOT supported
+  result.replace("Ť", "T");  // NOT supported
+  result.replace("ů", "u");  // Czech - NOT supported
+  result.replace("Ů", "U");  // NOT supported
+  result.replace("ý", "y");  // Czech/Slovak - NOT supported
+  result.replace("Ý", "Y");  // NOT supported
+  result.replace("ž", "z");  // Czech/Slovak - NOT supported
+  result.replace("Ž", "Z");  // NOT supported
+  
+  // Note: Characters like ö, é, è, etc. ARE supported by the font
+  // and should NOT be transliterated!
+  // Supported characters: °¿ÉÊÍÎÓÜßàáâäçèéêëíîïñóôöùúûüÿ‐→
   
   return result;
 }
