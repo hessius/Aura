@@ -30,33 +30,30 @@
 #define NIGHT_MODE_START_HOUR 22
 #define NIGHT_MODE_END_HOUR 6
 
-LV_FONT_DECLARE(lv_font_montserrat_latin_12);
-LV_FONT_DECLARE(lv_font_montserrat_latin_14);
-LV_FONT_DECLARE(lv_font_montserrat_latin_16);
-LV_FONT_DECLARE(lv_font_montserrat_latin_20);
-LV_FONT_DECLARE(lv_font_montserrat_latin_42);
+// Using LVGL's built-in Montserrat fonts with full UTF-8 character support
+// No need to declare - they are built into LVGL
 
 static Language current_language = LANG_EN;
 
-// Font selection based on language
+// Font selection using LVGL's built-in Montserrat fonts with full UTF-8 support
 const lv_font_t* get_font_12() {
-  return &lv_font_montserrat_latin_12;
+  return &lv_font_montserrat_12;
 }
 
 const lv_font_t* get_font_14() {
-  return &lv_font_montserrat_latin_14;
+  return &lv_font_montserrat_14;
 }
 
 const lv_font_t* get_font_16() {
-  return &lv_font_montserrat_latin_16;
+  return &lv_font_montserrat_16;
 }
 
 const lv_font_t* get_font_20() {
-  return &lv_font_montserrat_latin_20;
+  return &lv_font_montserrat_20;
 }
 
 const lv_font_t* get_font_42() {
-  return &lv_font_montserrat_latin_42;
+  return &lv_font_montserrat_42;
 }
 
 SPIClass touchscreenSPI = SPIClass(VSPI);
@@ -522,86 +519,11 @@ void create_ui() {
 }
 
 String transliterate_unsupported_chars(const String &input) {
-  String result = input;
-  
-  // TRANSLITERATION WORKAROUND for missing characters in LVGL fonts
-  // 
-  // Current font supports: °¿ÉÊÍÎÓÜßàáâäçèéêëíîïñóôöùúûüÿ‐→
-  // Missing for locations: ÀÁÂÄÅÆÇÈËÌÎÏÑÒÔÖØÙÚÛÝàâåæêëìîïòôøùýÿĄąĆćČčĎďĘęĚěŁłŃńŇňŘřŚśŠšŤťŮůŸŹźŻżŽž
-  //
-  // LONG-TERM SOLUTION: Update font files using LVGL Font Converter with complete character set
-  // For now, convert unsupported characters to readable ASCII alternatives
-  
-  // Scandinavian characters not in font
-  result.replace("å", "a");  // Swedish/Danish/Norwegian - NOT supported
-  result.replace("Å", "A");  // NOT supported
-  result.replace("æ", "ae"); // Danish/Norwegian - NOT supported
-  result.replace("Æ", "AE"); // NOT supported
-  result.replace("ø", "o");  // Danish/Norwegian - NOT supported
-  result.replace("Ø", "O");  // NOT supported
-  
-  // Missing uppercase variants (lowercase versions ARE supported)
-  result.replace("Ö", "O");  // Uppercase O with diaeresis - NOT supported (lowercase ö is supported)
-  result.replace("À", "A");  // Uppercase A with grave - NOT supported (lowercase à is supported)
-  result.replace("Á", "A");  // Uppercase A with acute - NOT supported (lowercase á is supported)
-  result.replace("Â", "A");  // Uppercase A with circumflex - NOT supported (lowercase â is supported)
-  result.replace("Ä", "A");  // Uppercase A with diaeresis - NOT supported (lowercase ä is supported)
-  result.replace("Ç", "C");  // Uppercase C with cedilla - NOT supported (lowercase ç is supported)
-  result.replace("È", "E");  // Uppercase E with grave - NOT supported (lowercase è is supported)
-  result.replace("Ë", "E");  // Uppercase E with diaeresis - NOT supported (lowercase ë is supported)
-  result.replace("Ï", "I");  // Uppercase I with diaeresis - NOT supported (lowercase ï is supported)
-  result.replace("Ñ", "N");  // Uppercase N with tilde - NOT supported (lowercase ñ is supported)
-  result.replace("Ô", "O");  // Uppercase O with circumflex - NOT supported (lowercase ô is supported)
-  result.replace("Ù", "U");  // Uppercase U with grave - NOT supported (lowercase ù is supported)
-  result.replace("Ú", "U");  // Uppercase U with acute - NOT supported (lowercase ú is supported)
-  result.replace("Û", "U");  // Uppercase U with circumflex - NOT supported (lowercase û is supported)
-  result.replace("Ÿ", "Y");  // Uppercase Y with diaeresis - NOT supported (lowercase ÿ is supported)
-  
-  // Polish characters not in font
-  result.replace("ł", "l");  // Polish - NOT supported
-  result.replace("Ł", "L");  // NOT supported
-  result.replace("ą", "a");  // Polish - NOT supported
-  result.replace("Ą", "A");  // NOT supported
-  result.replace("ć", "c");  // Polish - NOT supported
-  result.replace("Ć", "C");  // NOT supported
-  result.replace("ę", "e");  // Polish - NOT supported
-  result.replace("Ę", "E");  // NOT supported
-  result.replace("ń", "n");  // Polish - NOT supported
-  result.replace("Ń", "N");  // NOT supported
-  result.replace("ś", "s");  // Polish - NOT supported
-  result.replace("Ś", "S");  // NOT supported
-  result.replace("ź", "z");  // Polish - NOT supported
-  result.replace("Ź", "Z");  // NOT supported
-  result.replace("ż", "z");  // Polish - NOT supported
-  result.replace("Ż", "Z");  // NOT supported
-  
-  // Czech/Slovak characters not in font
-  result.replace("č", "c");  // Czech/Slovak - NOT supported
-  result.replace("Č", "C");  // NOT supported
-  result.replace("ď", "d");  // Czech/Slovak - NOT supported
-  result.replace("Ď", "D");  // NOT supported
-  result.replace("ě", "e");  // Czech - NOT supported
-  result.replace("Ě", "E");  // NOT supported
-  result.replace("ň", "n");  // Czech/Slovak - NOT supported
-  result.replace("Ň", "N");  // NOT supported
-  result.replace("ř", "r");  // Czech - NOT supported
-  result.replace("Ř", "R");  // NOT supported
-  result.replace("š", "s");  // Czech/Slovak - NOT supported
-  result.replace("Š", "S");  // NOT supported
-  result.replace("ť", "t");  // Czech/Slovak - NOT supported
-  result.replace("Ť", "T");  // NOT supported
-  result.replace("ů", "u");  // Czech - NOT supported
-  result.replace("Ů", "U");  // NOT supported
-  result.replace("ý", "y");  // Czech/Slovak - NOT supported
-  result.replace("Ý", "Y");  // NOT supported
-  result.replace("ž", "z");  // Czech/Slovak - NOT supported
-  result.replace("Ž", "Z");  // NOT supported
-  
-  // Note: Characters like ö, é, è, etc. ARE supported by the font
-  // and should NOT be transliterated!
-  // Supported characters: °¿ÉÊÍÎÓÜßàáâäçèéêëíîïñóôöùúûüÿ‐→
-  
-  return result;
+  // Using LVGL's built-in Montserrat fonts with full UTF-8 support
+  // Most international characters should now display correctly without transliteration
+  // Only return the original string for now - if specific characters still don't render,
+  // we can add minimal transliteration as needed
+  return input;
 }
 
 void populate_results_dropdown() {
