@@ -519,11 +519,66 @@ void create_ui() {
 }
 
 String transliterate_unsupported_chars(const String &input) {
-  // Using LVGL's built-in Montserrat fonts with full UTF-8 support
-  // Most international characters should now display correctly without transliteration
-  // Only return the original string for now - if specific characters still don't render,
-  // we can add minimal transliteration as needed
-  return input;
+  String result = input;
+  
+  // HYBRID APPROACH: Using LVGL's built-in Montserrat fonts with fallback transliteration
+  // Built-in fonts may have better support than custom latin fonts, but we keep
+  // minimal transliteration for characters that might still not be supported
+  
+  // Only transliterate characters that are commonly problematic in embedded fonts
+  // Scandinavian characters that are often missing
+  result.replace("å", "a");  // Swedish/Danish/Norwegian
+  result.replace("Å", "A");  
+  result.replace("æ", "ae"); // Danish/Norwegian
+  result.replace("Æ", "AE"); 
+  result.replace("ø", "o");  // Danish/Norwegian
+  result.replace("Ø", "O");  
+  
+  // Polish characters that are often missing in embedded fonts
+  result.replace("ł", "l");  
+  result.replace("Ł", "L");  
+  result.replace("ą", "a");  
+  result.replace("Ą", "A");  
+  result.replace("ć", "c");  
+  result.replace("Ć", "C");  
+  result.replace("ę", "e");  
+  result.replace("Ę", "E");  
+  result.replace("ń", "n");  
+  result.replace("Ń", "N");  
+  result.replace("ś", "s");  
+  result.replace("Ś", "S");  
+  result.replace("ź", "z");  
+  result.replace("Ź", "Z");  
+  result.replace("ż", "z");  
+  result.replace("Ż", "Z");  
+  
+  // Czech/Slovak characters often missing
+  result.replace("č", "c");  
+  result.replace("Č", "C");  
+  result.replace("ď", "d");  
+  result.replace("Ď", "D");  
+  result.replace("ě", "e");  
+  result.replace("Ě", "E");  
+  result.replace("ň", "n");  
+  result.replace("Ň", "N");  
+  result.replace("ř", "r");  
+  result.replace("Ř", "R");  
+  result.replace("š", "s");  
+  result.replace("Š", "S");  
+  result.replace("ť", "t");  
+  result.replace("Ť", "T");  
+  result.replace("ů", "u");  
+  result.replace("Ů", "U");  
+  result.replace("ý", "y");  
+  result.replace("Ý", "Y");  
+  result.replace("ž", "z");  
+  result.replace("Ž", "Z");  
+  
+  // Keep common Western European characters that are more likely to be supported:
+  // ÀÁÂÄÇÈÉÊËÌÍÎÏÑÒÓÔÖÙÚÛÜÝàáâäçèéêëìíîïñòóôöùúûüý
+  // These should work with built-in Montserrat fonts
+  
+  return result;
 }
 
 void populate_results_dropdown() {
