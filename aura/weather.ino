@@ -120,6 +120,16 @@ void apply_box_colors(lv_obj_t* obj) {
   lv_obj_set_style_bg_opa(obj, LV_OPA_COVER, LV_PART_MAIN | LV_STATE_DEFAULT);
 }
 
+// Helper function to build localized color scheme options string
+String get_localized_color_options(const LocalizedStrings* strings) {
+  String options = "";
+  for (int i = 0; i < 8; i++) {
+    if (i > 0) options += "\n";
+    options += strings->color_schemes[i];
+  }
+  return options;
+}
+
 SPIClass touchscreenSPI = SPIClass(VSPI);
 XPT2046_Touchscreen touchscreen(XPT2046_CS, XPT2046_IRQ);
 uint32_t draw_buf[DRAW_BUF_SIZE / 4];
@@ -905,7 +915,8 @@ void create_settings_window() {
   lv_obj_align_to(lbl_color, lbl_lang, LV_ALIGN_OUT_BOTTOM_LEFT, 0, vertical_element_spacing);
 
   color_scheme_dropdown = lv_dropdown_create(cont);
-  lv_dropdown_set_options(color_scheme_dropdown, "Blue\nRed\nYellow\nOrange\nWhite\nBlack\nGreen\nPink");
+  String color_options = get_localized_color_options(strings);
+  lv_dropdown_set_options(color_scheme_dropdown, color_options.c_str());
   lv_dropdown_set_selected(color_scheme_dropdown, current_color_scheme);
   lv_obj_set_width(color_scheme_dropdown, 120);
   lv_obj_set_style_text_font(color_scheme_dropdown, get_font_12(), LV_PART_MAIN | LV_STATE_DEFAULT);

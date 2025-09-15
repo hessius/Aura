@@ -34,6 +34,7 @@ struct LocalizedStrings {
   const char* reset_confirmation;
   const char* language_label;
   const char* color_scheme_label;
+  const char* color_schemes[8]; // Blue, Red, Yellow, Orange, White, Black, Green, Pink
   const char* weekdays[7];
   const char* use_night_mode;
 };
@@ -66,6 +67,7 @@ static const LocalizedStrings strings_en = {
   "reconfigure Wi-Fi credentials.",
   "Language:",
   "Color scheme:",
+  {"Blue", "Red", "Yellow", "Orange", "White", "Black", "Green", "Pink"},
   {"Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"},
   "Dim screen at night"
 };
@@ -98,6 +100,7 @@ static const LocalizedStrings strings_es = {
   "credenciales Wi-Fi.",
   "Idioma:",
   "Esquema de color:",
+  {"Azul", "Rojo", "Amarillo", "Naranja", "Blanco", "Negro", "Verde", "Rosa"},
   {"Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"},
   "Pantalla noche"
 };
@@ -132,6 +135,7 @@ static const LocalizedStrings strings_de = {
   "neu zu konfigurieren.",
   "Sprache:",
   "Farbschema:",
+  {"Blau", "Rot", "Gelb", "Orange", "Weiß", "Schwarz", "Grün", "Rosa"},
   {"So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"},
   "Nacht-Dimmen"
 };
@@ -166,6 +170,7 @@ static const LocalizedStrings strings_fr = {
   "les identifiants Wi-Fi.",
   "Langue:",
   "Schéma de couleur:",
+  {"Bleu", "Rouge", "Jaune", "Orange", "Blanc", "Noir", "Vert", "Rose"},
   {"Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"},
   "Nuit écran"
 };
@@ -197,6 +202,7 @@ static const LocalizedStrings strings_tr = {
   "gerekecek.",
   "Dil:",
   "Renk şeması:",
+  {"Mavi", "Kırmızı", "Sarı", "Turuncu", "Beyaz", "Siyah", "Yeşil", "Pembe"},
   {"Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"},
   "Gece kısık"
 };
@@ -232,6 +238,7 @@ static const LocalizedStrings strings_sv = {
   "autentiseringsuppgifter.",
   "Språk:",
   "Färgschema:",
+  {"Blå", "Röd", "Gul", "Orange", "Vit", "Svart", "Grön", "Rosa"},
   {"Sön", "Mån", "Tis", "Ons", "Tor", "Fre", "Lör"},
   "Dimma nattetid"
 };
@@ -262,6 +269,7 @@ static const LocalizedStrings strings_it = {
   "riconfigurare le credenziali Wi-Fi.",
   "Lingua:",
   "Schema colore:",
+  {"Blu", "Rosso", "Giallo", "Arancione", "Bianco", "Nero", "Verde", "Rosa"},
   {"Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"},
   "Schermo notte"
 };
